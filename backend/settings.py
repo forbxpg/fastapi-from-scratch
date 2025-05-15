@@ -1,11 +1,30 @@
-import os
+"""Settings for the backend application."""
 
-from pydantic_settings import BaseSettings
+import os
+import re
+
 from dotenv import load_dotenv
 
 
 load_dotenv()
 
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    default="postgresql+asyncpg://postgres:postgres@localhost:5432/postgres",
+)
+DATABASE_ECHO = (
+    os.environ.get("DATABASE_ECHO", default="false").lower() == "true"
+)
+
+# Constants
+NAME_LENGTH = 150
+EMAIL_LENGTH = 254
+PHONE_LENGTH = 20
+PHONENUMBER_REGION = "UZ"
+
+
+# Validation
+LETTER_PATTERN = re.compile(r"^[a-zA-Zа-яА-ЯёЁ]+$")
 
 # CORS Middleware settings
 ALLOW_CREDENTIALS = os.environ.get("ALLOW_CREDENTIALS").lower() == "true"
@@ -16,16 +35,3 @@ CORS_ORIGINS = os.environ.get("CORS_ORIGINS").split(",")
 
 # Postgres
 POSTGRES_URL = os.environ.get("POSTGRES_URL", "sqlite:///db.sqlite")
-
-
-class SignUpSettings(BaseSettings):
-    """Cognito signup secrets."""
-
-    COGNITO_CLIENT_ID: str = ""
-    COGNITO_CLIENT_SECRET: str = ""
-    REGION_NAME: str = ""
-
-
-# Constants
-USERNAME_MAX_LENGTH = 150
-EMAIL_MAX_LENGTH = 150

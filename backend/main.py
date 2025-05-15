@@ -1,15 +1,20 @@
 """Main application start module."""
 
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.v1.routes import user_router_v1
 
 import settings
 from db.base import Base
 from db.db import engine
 
 
-app = FastAPI()
+router_v1 = APIRouter()
+router_v1.include_router(user_router_v1, prefix="/users", tags=["users"])
+
+app = FastAPI(title="MEPH Education API", version="1.0", openapi_prefix="/v1")
+app.include_router(router_v1, tags=["v1"], prefix="/v1")
 
 app.add_middleware(
     CORSMiddleware,
@@ -20,10 +25,10 @@ app.add_middleware(
 )
 
 
-@app.get("/")
+@app.get("/v1")
 def home():
     return {
-        "message": "Hello World!",
+        "message": "Hi there!!!",
     }
 
 
