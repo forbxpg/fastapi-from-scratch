@@ -12,7 +12,7 @@ from pydantic import EmailStr
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.users import User
+from database.models import User
 from settings import PHONENUMBER_REGION
 
 
