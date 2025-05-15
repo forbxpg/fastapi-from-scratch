@@ -6,8 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.v1.routes import user_router_v1
 
 import settings
-from db.base import Base
-from db.db import engine
 
 
 router_v1 = APIRouter()
@@ -25,11 +23,8 @@ app.add_middleware(
 )
 
 
-@app.get("/v1")
+@app.get("/")
 def home():
     return {
         "message": "Hi there!!!",
     }
-
-
-Base.metadata.create_all(engine)

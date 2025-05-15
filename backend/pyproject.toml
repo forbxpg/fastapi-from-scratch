@@ -9,4 +9,18 @@ line_length = 79
 known_third_party = ["fastapi", "pydantic", "sqlalchemy"]
 default_section = "THIRDPARTY"
 
-
+[tool.flake8]
+max-line-length = 79
+extend-ignore = [
+    "E203", # whitespace before ':'
+    "E501", # line too long
+    "W503", # line break before binary operator
+]
+exclude = [
+    ".venv",
+    "__pycache__",
+    "migrations",
+    "alembic",
+    "tests",
+    "docs",
+]

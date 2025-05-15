@@ -1,9 +1,7 @@
-"""Pydantic models for user-related data."""
-
-import uuid
+"""Pydantic-модели для пользователей."""
 
 from fastapi import HTTPException, status
-from pydantic import field_validator, EmailStr
+from pydantic import field_validator, EmailStr, UUID4
 from pydantic import BaseModel as PydanticBaseModel
 
 from .utils import PhoneNumber
@@ -11,19 +9,19 @@ from settings import LETTER_PATTERN
 
 
 class BaseModel(PydanticBaseModel):
-    """Base model for Pydantic models."""
+    """Базовая модель для юзеров.."""
 
     class Config:
-        """Pydantic configuration. Converts even not dict obj to JSON."""
+        """Конфиг pydantic для взаимодействия с не-json объектами."""
 
         orm_mode = True
         arbitrary_types_allowed = True
 
 
 class UserRead(BaseModel):
-    """User representation model."""
+    """Модель для репрезентации пользователя."""
 
-    user_id: uuid.UUID
+    user_id: UUID4
     first_name: str
     last_name: str
     email: EmailStr
@@ -38,7 +36,7 @@ class UserRead(BaseModel):
 
 
 class UserCreate(BaseModel):
-    """User creation model."""
+    """Модель для создания пользователя."""
 
     first_name: str
     last_name: str
@@ -55,7 +53,6 @@ class UserCreate(BaseModel):
     @field_validator("first_name")
     @classmethod
     def validate_first_name(cls, value: str) -> str:
-        """Validate first name."""
         if not LETTER_PATTERN.match(value):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -66,7 +63,6 @@ class UserCreate(BaseModel):
     @field_validator("last_name")
     @classmethod
     def validate_last_name(cls, value: str) -> str:
-        """Validate last name."""
         if not LETTER_PATTERN.match(value):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

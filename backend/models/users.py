@@ -15,7 +15,13 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
 
-    user_id = Column(UUID, primary_key=True, default=uuid.uuid4, index=True)
+    user_id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+        index=True,
+        unique=True,
+    )
     first_name = Column(String(settings.NAME_LENGTH), nullable=False)
     last_name = Column(String(settings.NAME_LENGTH), nullable=False)
     is_active = Column(Boolean, nullable=False, default=True)
