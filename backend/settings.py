@@ -1,0 +1,29 @@
+"""Settings for the backend application."""
+
+import os
+import re
+
+
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    default="postgresql+asyncpg://postgres:postgres@localhost:5432/postgres",
+)
+DATABASE_ECHO = (
+    os.environ.get("DATABASE_ECHO", default="false").lower() == "true"
+)
+
+# Constants
+NAME_LENGTH = 150
+EMAIL_LENGTH = 254
+PHONE_LENGTH = 20
+PHONENUMBER_REGION = "UZ"
+
+
+# Validation
+LETTER_PATTERN = re.compile(r"^[a-zA-Zа-яА-ЯёЁ]+$")
