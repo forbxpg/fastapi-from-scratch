@@ -3,12 +3,10 @@
 import os
 import re
 
-
 from dotenv import load_dotenv
 
 
 load_dotenv()
-
 
 DATABASE_URL = os.environ.get(
     "DATABASE_URL",
@@ -27,3 +25,13 @@ PHONENUMBER_REGION = "UZ"
 
 # Validation
 LETTER_PATTERN = re.compile(r"^[a-zA-Zа-яА-ЯёЁ]+$")
+
+# CORS Middleware settings
+ALLOW_CREDENTIALS = os.environ.get("ALLOW_CREDENTIALS").lower() == "true"
+ALLOW_HEADERS = os.environ.get("ALLOW_HEADERS").split(",")
+ALLOWED_METHODS = os.environ.get("ALLOW_METHODS").split(",")
+CORS_ORIGINS = os.environ.get("CORS_ORIGINS").split(",")
+
+
+# Postgres
+POSTGRES_URL = os.environ.get("POSTGRES_URL", "sqlite:///db.sqlite")
