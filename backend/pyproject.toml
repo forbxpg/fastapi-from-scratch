@@ -24,3 +24,10 @@ exclude = [
     "tests",
     "docs",
 ]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = [
+    "tests",
+]
+

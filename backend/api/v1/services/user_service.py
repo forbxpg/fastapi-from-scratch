@@ -29,19 +29,24 @@ class UserService:
                 detail="Пользователь с таким номером телефона уже существует!",
             )
 
-    async def create_user(self, data: UserCreate) -> UserRead:
+    async def create_user(
+        self, data: UserCreate, session: AsyncSession
+    ) -> UserRead:
         """Сервис для создания пользователя."""
-        await self.check_user_exists(data)
-        user = await self.user_repository.add_user(
-            first_name=data.first_name,
-            last_name=data.last_name,
-            email=data.email,
-            phone=data.phone,
-        )
-        return UserRead(
-            user_id=user.user_id,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            email=user.email,
-            phone=str(user.phone),
-        )
+        async with session:
+            async with self.db_session.begin():
+                await self.check_user_exists(data)
+                user = await self.user_repository.add_user(
+                    first_name=data.first_name,
+                    last_name=data.last_name,
+                    email=data.email,
+                    phone=data.phone,
+                )
+                return UserRead(
+                    user_id=user.user_id,
+                    first_name=user.first_name,
+                    last_name=user.last_name,
+                    email=user.email,
+                    phone=str(user.phone),
+                    is_active=user.is_active,
+                )

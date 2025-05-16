@@ -26,6 +26,7 @@ class UserRead(BaseModel):
     last_name: str
     email: EmailStr
     phone: str
+    is_active: bool
 
     class Config(BaseModel.Config):
         """Pydantic configuration."""

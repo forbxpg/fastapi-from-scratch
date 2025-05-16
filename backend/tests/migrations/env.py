@@ -16,7 +16,11 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
+import sys
+
+sys.path = ["", ".."] + sys.path[1:]
 from database.models import Base
+
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
 

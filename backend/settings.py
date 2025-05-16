@@ -12,6 +12,11 @@ DATABASE_URL = os.environ.get(
     "DATABASE_URL",
     default="postgresql+asyncpg://postgres:postgres@localhost:5432/postgres",
 )
+TEST_DATABASE_URL = os.environ.get(
+    "TEST_DATABASE_URL",
+    default="postgresql+asyncpg://postgres:postgres@localhost:5433/postgres",
+)
+
 DATABASE_ECHO = (
     os.environ.get("DATABASE_ECHO", default="false").lower() == "true"
 )

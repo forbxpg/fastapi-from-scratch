@@ -1,16 +1,39 @@
 volumes:
   pg_data:
+  pg_test:
+
+networks:
+  custom_network:
+    driver: bridge
 
 services:
 
   db:
     image: postgres:15-alpine
     container_name: postgres
+    restart: always
     ports:
       - "5432:5432"
     env_file: ../.env
     volumes:
       - pg_data:/var/lib/postgresql/data
+    networks:
+      - custom_network
+
+  test_db:
+    image: postgres:15-alpine
+    container_name: test_postgres
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - TEST_DATABASE_URL=postgresql+asyncpg://postgres:postgres@test_db:5432/postgres
+      - PYTHONPATH=/app:/app/
+    networks:
+      - custom_network
 
   backend:
     build:
@@ -22,4 +45,14 @@ services:
     env_file: ../.env
     depends_on:
       - db
+      - test_db
+    networks:
+      - custom_network
+    environment:
+      - PYTHONPATH=/app:/app/
+
+
+
+
+
 
